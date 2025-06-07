@@ -15,3 +15,18 @@
   echo 'export PATH="$PATH:$HOME/.local/bin"' >> $HOME/.zshrc
   source $HOME/.zshrc
   ```
+  
+- Install the gRPC library using the following command:
+  ```bash
+  go get -u google.golang.org/grpc
+  ```
+  
+- Install the protoc plug-in for Go using the following command:
+  ```bash
+  go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+  echo 'export PATH="$PATH:$(go env GOPATH)/bin"' >> $HOME/.zshrc
+  source $HOME/.zshrc
+
+  # Verfication
+  protoc-gen-go --version
+  ```
