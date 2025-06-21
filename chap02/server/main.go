@@ -23,8 +23,7 @@ type server struct {
 }
 
 // AddProduct implements ecommerce.AddProduct
-func (s *server) AddProduct(ctx context.Context,
-	in *pb.Product) (*pb.ProductID, error) {
+func (s *server) AddProduct(ctx context.Context, in *pb.Product) (*pb.ProductID, error) {
 	out, err := uuid.NewV4()
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "Error while generating Product ID", err)
