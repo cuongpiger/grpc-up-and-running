@@ -9,7 +9,7 @@
 - Postman: [hidden](https://gold-shuttle-395606.postman.co/workspace/My-Workspace~e9564e49-df76-48b9-8f40-1c74ee320241/folder/68565ede55855a1cdfab19a8?action=share&creator=10413281&ctx=documentation&active-environment=10413281-37d0952d-6a07-443b-a8f3-83805f295a77)
 <hr>
 
-# Installation necessary tools:
+# 🔧 Installation necessary tools:
 - Download and install the latest protocol buffer version 3 compiler from the [GitHub release page](https://github.com/protocolbuffers/protobuf/releases). Then run this command:
   ```bash
   unzip protoc-*-linux-x86_64.zip -d $HOME/.local
@@ -32,6 +32,6 @@
   protoc-gen-go --version
   ```
 
-# Completed chaps
-- [x] **chap01**: Introduction to gRPC and Protocol Buffers
-- [x] [**chap02**](./chap02/README.md): Implementing a Simple gRPC Service
+# ✅ Completed chaps
+- [x] **Chap 01**: Introduction to gRPC and Protocol Buffers
+- [x] [**Chap 02**](./chap02/README.md): Implementing a Simple gRPC Service
