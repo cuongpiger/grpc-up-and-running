@@ -30,3 +30,7 @@
   # Verfication
   protoc-gen-go --version
   ```
+
+# Completed chaps
+- [x] chap01
+- [x] [chap02](./chap02/README.md)
