@@ -33,5 +33,5 @@
   ```
 
 # Completed chaps
-- [x] chap01: Introduction to gRPC and Protocol Buffers
-- [x] [chap02](./chap02/README.md): Implementing a Simple gRPC Service
+- [x] **chap01**: Introduction to gRPC and Protocol Buffers
+- [x] [**chap02**](./chap02/README.md): Implementing a Simple gRPC Service
