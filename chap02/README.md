@@ -7,3 +7,10 @@
   ```bash
   make runServer
   ```
+
+- To run the gRPC client:
+  ```bash
+  make runClient
+  ```
+
+![](./assets/01.png)
