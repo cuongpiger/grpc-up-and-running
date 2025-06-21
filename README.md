@@ -1,3 +1,4 @@
+![](./assets/cover.png)
 # gRPC up and running
 
 <hr>
