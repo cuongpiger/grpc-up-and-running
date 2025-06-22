@@ -35,3 +35,8 @@
 # ✅ Completed chaps
 - [x] **Chap 01**: Introduction to gRPC and Protocol Buffers
 - [x] [**Chap 02**](./chap02/README.md): Implementing a Simple gRPC Service
+- [x] [**Chap 03**](./chap03/README.md): Implementing a gRPC Service with Advanced Features
+  - Unary RPC
+  - Server Streaming RPC
+  - Client Streaming RPC
+  - Bidirectional Streaming RPC
