@@ -40,3 +40,4 @@
   - Server Streaming RPC
   - Client Streaming RPC
   - Bidirectional Streaming RPC
+- [ ] [**Chap 04**](./chap04/README.md): gRPC under the hood
