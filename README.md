@@ -12,6 +12,10 @@
 # 🔧 Installation necessary tools:
 - Download and install the latest protocol buffer version 3 compiler from the [GitHub release page](https://github.com/protocolbuffers/protobuf/releases). Then run this command:
   ```bash
+  # macOS
+  brew install protobuf
+
+  # Linux
   unzip protoc-*-linux-x86_64.zip -d $HOME/.local
   echo 'export PATH="$PATH:$HOME/.local/bin"' >> $HOME/.zshrc
   source $HOME/.zshrc
