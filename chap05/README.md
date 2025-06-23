@@ -31,3 +31,18 @@ In the "Deadlines" section of Chapter 5, the following important knowledge is pr
 
 My demonstration of deadlines in this chapter includes:
 ![](./assets/02.png)
+
+## Cancellation
+
+In Go, **cancellation** provides a mechanism for either the client or the server application to **terminate ongoing gRPC communication**. This is crucial because, in a gRPC connection, both the client and server independently determine the success of an RPC, meaning their conclusions about its outcome might differ. When one party cancels an RPC, this fact is **propagated to the other side**, and no further RPC-related messaging can occur for that call.
+
+Here's how cancellation is handled in Go:
+
+- **Context Package**: The capability for cancellation in Go is provided through the **`context` package**. Specifically, the `context.WithCancel` function (or `context.WithTimeout`, which implicitly includes cancellation functionality) is used to create a new context with a cancel function.
+- **Client-Side Initiation**: On the client side, after obtaining the `cancel` function from a `context.WithTimeout` or `context.WithCancel` call, the client can invoke this `cancel()` function at any point when it wishes to terminate the RPC. This action leads the gRPC library on the client side to **create a required gRPC header** to signal the termination to the server.
+- **Server-Side Detection**: On the server side, the remote method implementation can **detect if the client has canceled the RPC** by checking the context using `stream.Context().Err() == context.Canceled`. This allows the server to abandon its processing for that RPC if the client no longer requires a response, preventing unnecessary resource usage.
+
+In essence, cancellation is a fundamental feature for robust distributed systems, enabling graceful termination of RPCs and preventing resource leaks when either party no longer needs to continue the communication.
+
+My demonstration of cancellation in this chapter includes:
+![](./assets/03.png)

@@ -50,3 +50,4 @@
 - [ ] [**Chap 05**](./chap05/README.md): gRPC - Beyond the Basics
   - [x] [Interceptors](./chap05/interceptors/)
   - [x] [Deadlines](./chap05/deadlines/)
+  - [x] [Cancellation](./chap05/cancellation/)
