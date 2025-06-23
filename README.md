@@ -48,4 +48,5 @@
   - [x] Bidirectional Streaming RPC
 - [ ] [**Chap 04**](./chap04/README.md): gRPC - Under the hood
 - [ ] [**Chap 05**](./chap05/README.md): gRPC - Beyond the Basics
-  - [x] [Interceptors](./chap05//interceptors/)
+  - [x] [Interceptors](./chap05/interceptors/)
+  - [x] [Deadlines](./chap05/deadlines/)
