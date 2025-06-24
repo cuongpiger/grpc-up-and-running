@@ -18,7 +18,7 @@ The Go gRPC Middleware project further extends this concept by providing **inter
 My demonstration of interceptors in this chapter includes:
 ![](./assets/01.png)
 
-## Deadlines
+# Deadlines
 
 In the "Deadlines" section of Chapter 5, the following important knowledge is presented regarding Go (Golang):
 
@@ -32,7 +32,7 @@ In the "Deadlines" section of Chapter 5, the following important knowledge is pr
 My demonstration of deadlines in this chapter includes:
 ![](./assets/02.png)
 
-## Cancellation
+# Cancellation
 
 In Go, **cancellation** provides a mechanism for either the client or the server application to **terminate ongoing gRPC communication**. This is crucial because, in a gRPC connection, both the client and server independently determine the success of an RPC, meaning their conclusions about its outcome might differ. When one party cancels an RPC, this fact is **propagated to the other side**, and no further RPC-related messaging can occur for that call.
 
@@ -46,3 +46,46 @@ In essence, cancellation is a fundamental feature for robust distributed systems
 
 My demonstration of cancellation in this chapter includes:
 ![](./assets/03.png)
+
+# Error Handling
+
+When handling errors in gRPC applications, especially focusing on Go, it's crucial to remember the following key knowledge:
+
+- **Error Reporting**
+  - When a gRPC call is invoked, the client will receive either a successful status or an error with a corresponding error status. Both client and server applications must be designed to gracefully handle these potential errors and conditions.
+- **Status Object Structure**
+  - gRPC returns an **error status object**. This object is comprised of an **integer code** and an **optional string message** that provides more detailed information about the error condition. These components are consistent across all gRPC implementations for different languages.
+- **Well-Defined Status Codes**
+  - gRPC utilizes a predefined set of status codes. Some common examples mentioned in the sources include:
+    - **OK (0)**: Indicates a successful status, not an error.
+    - **CANCELLED (1)**: The operation was canceled, typically by the caller.
+    - **UNKNOWN (2)**: An unknown error occurred.
+    - **INVALID_ARGUMENT (3)**: The client provided an invalid argument.
+    - **DEADLINE_EXCEEDED (4)**: The deadline expired before the operation could be completed. This is particularly relevant given our previous discussion on deadlines.
+    - **NOT_FOUND (5)**: A requested entity was not found.
+    - **ALREADY_EXISTS (6)**: The entity a client tried to create already exists.
+    - **PERMISSION_DENIED (7)**: The caller lacks permission to execute the specified operation.
+    - **UNAUTHENTICATED (16)**: The request does not have valid authentication credentials for the operation.
+    - **RESOURCE_EXHAUSTED (8)**: A resource has been exhausted.
+    - **UNIMPLEMENTED (12)**: The operation is not implemented or supported in this service.
+    - **INTERNAL (13)**: Indicates internal errors.
+    - **UNAVAILABLE (14)**: The service is currently unavailable.
+  - A comprehensive list of error codes can be found in the official gRPC documentation [295, Table 5-1].
+- **Richer Error Model**
+  - For applications utilizing protocol buffers, a richer error model provided by Google APIs under the `google.rpc` package can be used. This model is supported in **Go** (along with C++, Java, Python, and Ruby).
+- **Server-Side Error Creation and Propagation (Go Specific)**
+  - Servers should generate appropriate errors with corresponding status codes.
+  - In Go, errors can be created using functions from gRPC's `status` package, such as `status.New`, by specifying the error code and details.
+  - To include a richer error model, you can add error details with specific error types. For instance, the source demonstrates adding `BadRequest_FieldViolation` from `google.golang.org/genproto/googleapis/rpc/errdetails`.
+  - These errors are then returned to the client, for example, using **`return nil, errorStatus.Err()`**.
+  - gRPC error status and details are typically transmitted via the **trailer headers** at the transport protocol level.
+  - Servers can also detect when a client has reached a deadline by checking `ctx.Err() == context.DeadlineExceeded` (often using a nonblocking `select` construct in Go) and abandon the RPC if necessary.
+- **Client-Side Error Handling (Go Specific)**
+  - The client processes the error that is returned as part of the RPC invocation.
+  - The `grpc/status` package in Go can be used to obtain the error code (e.g., **`status.Code(addOrderError)`**).
+  - Clients can also convert the error to a `status.Status` object (e.g., `status.Convert(addOrderError)`) and iterate through its `Details()` to check for and handle specific richer error types like `BadRequest_FieldViolation`.
+- **Best Practices**
+  - It is generally recommended to **use appropriate gRPC error codes** and leverage a **richer error model** whenever feasible for your gRPC applications.
+
+My demonstration of error handling in this chapter includes:
+![](./assets/04.png)
