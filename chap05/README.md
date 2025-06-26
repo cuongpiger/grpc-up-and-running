@@ -89,3 +89,27 @@ When handling errors in gRPC applications, especially focusing on Go, it's cruci
 
 My demonstration of error handling in this chapter includes:
 ![](./assets/04.png)
+
+# Multiplexing
+
+Multiplexing in gRPC, as discussed in Chapter 5, refers to the capability to **run multiple gRPC services on the same gRPC server** and to **use the same gRPC client connection for multiple gRPC client stubs**. This feature is particularly useful in managing distributed applications.
+
+Here's a breakdown focusing on Go:
+
+- **Server-Side Multiplexing**:
+
+  - You can register multiple gRPC services on a single gRPC server instance.
+  - This is achieved by calling their respective `Register...Server` functions on the same `grpc.NewServer()` instance,.
+  - For example, if you have an `OrderManagementService` and a `GreeterService`, you would register both using `ordermgt_pb.RegisterOrderManagementServer(grpcServer, &orderMgtServer{})` and `hello_pb.RegisterGreeterServer(grpcServer, &helloServer{})` on the same `grpcServer`,.
+
+- **Client-Side Multiplexing**:
+
+  - Similarly, a single gRPC connection can be shared and used by multiple gRPC client stubs.
+  - This means you can create a single `grpc.ClientConn` and then use that same connection when initializing different service clients, such as `pb.NewOrderManagementClient(conn)` and `hwpb.NewGreeterClient(conn)`,.
+
+- **Design Considerations and Best Practices**:
+  - While gRPC allows for multiplexing, it's a design choice and **it's common in microservices to not share the same gRPC server instance between two services**.
+  - A **powerful use case** for gRPC multiplexing in a microservice architecture is to **host multiple major versions of the same service within a single server process**. This allows a service to continue accommodating legacy clients even after breaking API changes are introduced. The older version of the service contract can then be removed once it's no longer in use.
+
+My demonstration of multiplexing in this chapter includes:
+![](./assets/05.png)
