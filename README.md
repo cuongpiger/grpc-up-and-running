@@ -51,3 +51,4 @@
   - [x] [Interceptors](./chap05/interceptors/)
   - [x] [Deadlines](./chap05/deadlines/)
   - [x] [Cancellation](./chap05/cancellation/)
+  - [x] [Multiplexing](./chap05/multiplexing/)
