@@ -54,3 +54,5 @@
   - [x] [Multiplexing](./chap05/multiplexing/)
   - [x] [Metadata](./chap05/metadata/)
   - [x] [Load Balancing](./chap05/loadbalancer/)
+- [x] [**Chap 06**](./chap06/README.md): Secured gRPC
+  - [x] [One-Way Secured Connection with TLS](./chap06/secure-channel/)
