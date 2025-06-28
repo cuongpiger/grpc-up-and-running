@@ -74,3 +74,30 @@ The implementation is located in the [mutual-tls-channel](./mutual-tls-channel) 
 
 My demonstration of mTLS in this chapter includes:
 ![](./assets/02.png)
+
+# Using Basic Authentication
+
+Basic authentication is a straightforward method for verifying a caller's identity in gRPC, although gRPC generally advises against its use because it lacks time-based control mechanisms like tokens. It is recommended to share basic credentials over a secure connection.
+
+Here's how basic authentication can be implemented in Go for gRPC applications:
+
+- **Client-Side Implementation**:
+
+  - Since gRPC does not have built-in support for basic authentication, you need to add it as **custom credentials**.
+  - This is done by defining a struct (e.g., `basicAuth`) that holds user credentials (like username and password).
+  - You must then implement the `PerRPCCredentials` interface for this struct, specifically the `GetRequestMetadata` method. This method converts the user credentials into a request metadata map, where the **"authorization" key is set with a value starting "Basic " followed by the base64-encoded "username:password" string**. For example, `Authorization: Basic YWRtaW46YWRtaW4=`.
+  - The `RequireTransportSecurity` method of the `PerRPCCredentials` interface should return `true`, emphasizing the recommendation for channel security when using basic authentication.
+  - Finally, when setting up the gRPC connection, you pass this initialized authentication struct to `grpc.WithPerRPCCredentials()` as a `DialOption`.
+
+- **Server-Side Implementation**:
+  - On the server, you need to **intercept incoming requests** to validate the client's credentials.
+  - This is achieved by adding a `grpc.UnaryInterceptor` when creating the gRPC server.
+  - Within the interceptor function (e.g., `ensureValidBasicCredentials`), you **extract the metadata from the request's context** using `metadata.FromIncomingContext(ctx)`.
+  - The value associated with the "authorization" key (which is normalized to lowercase in metadata) is then retrieved and validated against the expected username and password (e.g., "admin:admin").
+  - If the validation fails (e.g., missing metadata or invalid token), the interceptor blocks the request and returns an error (e.g., `codes.InvalidArgument` or `codes.Unauthenticated`).
+  - If the credentials are valid, the interceptor allows the request to proceed to the actual service method handler.
+
+The implementation is located in the [basic-authentication](./basic-authentication) directory.
+
+My demonstration of basic authentication in this chapter includes:
+![](./assets/03.png)

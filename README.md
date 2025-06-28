@@ -57,3 +57,4 @@
 - [x] [**Chap 06**](./chap06/README.md): Secured gRPC
   - [x] [One-Way Secured Connection with TLS](./chap06/secure-channel/)
   - [x] [Mutual Secured Connection with mTLS](./chap06/mutual-tls-channel/)
+  - [x] [Basic Authentication](./chap06/basic-authentication/)
