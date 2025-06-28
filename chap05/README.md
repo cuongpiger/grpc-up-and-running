@@ -156,3 +156,34 @@ Focusing on **Go**:
 
 My demonstration of metadata in this chapter includes:
 ![](./assets/06.png)
+
+# Loadbalancing
+
+In gRPC, **load balancing** is a crucial mechanism used to **distribute RPC calls among multiple gRPC servers** when building production-ready applications that require high availability and scalability. Chapter 5 discusses two primary load-balancing approaches: the **load-balancer (LB) proxy** and **client-side load balancing**.
+
+### Load-Balancer Proxy (LB Proxy)
+
+This approach involves the client sending RPCs to an **intermediate LB proxy**, which then distributes these calls to one of the available backend gRPC servers.
+
+- **Functionality**: The LB proxy is responsible for tracking the load on each backend server and applies various load-balancing algorithms to distribute the incoming requests.
+- **Transparency to Clients**: The topology of the backend services is **not transparent to the gRPC clients**; clients only need to know the load balancer's endpoint to connect. This means no client-side changes are needed beyond pointing to the load balancer's address.
+- **Requirements**: Any load balancer used as an LB proxy for gRPC applications **must have full HTTP/2 support**. Examples include **Nginx** and **Envoy proxy**.
+
+### Client-Side Load Balancing
+
+In contrast to the proxy approach, **client-side load balancing** involves implementing the load-balancing logic directly at the gRPC client level. Here, the client is aware of multiple backend gRPC servers and selects one for each RPC call.
+
+- **Implementation Methods**:
+  - **Thick Client**: The load-balancing logic is developed entirely as part of the client application.
+  - **Lookaside Load Balancer**: A dedicated server (the lookaside load balancer) is queried by the client to obtain the best gRPC server to connect to, and the client then directly connects to that address.
+- **Go-Specific Implementation (Thick Client Example)**:
+  - Clients connect using a specific **scheme** and **service name** (e.g., `example:///lb.example.grpc.io`).
+  - A **name resolver** (such as the `exampleResolver` in the source) is used to translate this service name into a list of actual backend IP addresses and ports (e.g., `localhost:50051` and `localhost:50052`).
+  - The **`grpc.WithBalancerName()`** option is used in `grpc.Dial` to specify the desired load-balancing algorithm.
+- **Default Load-Balancing Policies in gRPC (Go)**:
+  - **`pick_first`**: This is the default policy. It attempts to connect to the _first_ address returned by the name resolver and, if successful, uses that connection for all subsequent RPCs. If it fails, it tries the next address.
+  - **`round_robin`**: This policy connects to _all_ available addresses returned by the name resolver and sends RPCs to each backend one at a time, in a rotating sequence.
+- **Context in Cloud-Native Environments**: When gRPC applications are deployed on container orchestration platforms like **Kubernetes** or utilize service mesh, the need to implement client-side load balancing logic directly in the gRPC code becomes less common. This is because these platforms often provide underlying features for load balancing, high availability, and service discovery out of the box, abstracting away much of this complexity.
+
+My demonstration of load balancing in this chapter includes:
+![](./assets/07.png)
