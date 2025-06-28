@@ -52,3 +52,4 @@
   - [x] [Deadlines](./chap05/deadlines/)
   - [x] [Cancellation](./chap05/cancellation/)
   - [x] [Multiplexing](./chap05/multiplexing/)
+  - [x] [Metadata](./chap05/metadata/)

@@ -113,3 +113,46 @@ Here's a breakdown focusing on Go:
 
 My demonstration of multiplexing in this chapter includes:
 ![](./assets/05.png)
+
+# Metadata
+
+Metadata in gRPC, as discussed in Chapter 5, serves as a mechanism to **share information about RPC calls that is not directly related to the business context of the RPC arguments**. This means you can send or receive data from either the gRPC service or the gRPC client, even if that data isn't part of the remote method's input or output parameters. This information is structured as a **list of key (string)/value pairs**. One of the most common applications for metadata is the **exchange of security headers** between gRPC applications. Metadata APIs are frequently utilized within interceptors.
+
+Focusing on **Go**:
+
+- **Metadata Structure and Creation**:
+
+  - In Go, metadata is represented as a **normal map**.
+  - You can create metadata in two primary ways:
+    - Using `metadata.New(map[string]string{"key1": "val1", "key2": "val2"})`.
+    - Using `metadata.Pairs("key1", "val1", "key1", "val1-2", "key2", "val2")`. This method merges values for the same key into a list (e.g., "key1" would have the value `[]string{"val1", "val1-2"}`).
+  - **Binary data can also be set as metadata values**; it will be base64 encoded before transmission and decoded upon reception.
+
+- **Retrieving Metadata (Client and Server Side)**:
+
+  - Metadata can be retrieved from the **incoming context of the RPC call** using `metadata.FromIncomingContext(ctx)`. This function returns the metadata map in Go.
+
+- **Sending Metadata from the Client Side**:
+
+  - Metadata is sent from the client by **setting it into the context of the RPC call**.
+  - There are two methods to achieve this in Go:
+    - `metadata.NewOutgoingContext(context.Background(), md)`: This creates a **new context with the new metadata**, effectively replacing any existing metadata in the context.
+    - `metadata.AppendToOutgoingContext(mdCtx, "k1", "v1", "k1", "v2", "k2", "v3")`: This allows you to **append additional metadata** to an existing context.
+  - Once a context is created with the necessary metadata, it can be used for both **unary or streaming RPCs**.
+  - At the wire level, the metadata set in the context is translated into **gRPC headers (on HTTP/2) or trailers**.
+
+- **Receiving Metadata on the Client Side**:
+
+  - When receiving metadata from the server, clients treat them as either **headers or trailers**.
+  - For **unary RPCs**, you pass references to `metadata.MD` variables to the `grpc.Header(&header)` and `grpc.Trailer(&trailer)` options during the RPC call to store the returned values.
+  - For **streaming RPCs**, you can retrieve headers using `stream.Header()` and trailers using `stream.Trailer()` from the client stream object.
+  - The retrieved metadata can then be processed as a generic map.
+
+- **Sending Metadata from the Server Side**:
+  - Servers can send metadata by either sending it as a **header with metadata** or by **setting a trailer with metadata**.
+  - The metadata creation method is the same as discussed for the client side.
+  - In Go, for both unary and streaming cases, you can send headers using `grpc.SendHeader(ctx, header)` or `stream.SendHeader(header)`.
+  - To send metadata as part of the trailer, you use `grpc.SetTrailer(ctx, trailer)` for unary RPCs or `stream.SetTrailer(trailer)` for streaming RPCs, of the respective stream's context.
+
+My demonstration of metadata in this chapter includes:
+![](./assets/06.png)
