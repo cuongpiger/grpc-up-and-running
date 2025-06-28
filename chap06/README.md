@@ -25,3 +25,52 @@ The implementation is located in the [secure-channel](./secure-channel) director
 
 My demonstration of load balancing in this chapter includes:
 ![](./assets/01.png)
+
+# Enabling an mTLS Secured Connection
+
+The "Enabling an mTLS Secured Connection" section in Chapter 6 focuses on establishing **mutual Transport Level Security (mTLS)** for gRPC communication.
+
+Here's a summary of the main knowledge presented:
+
+- **Purpose of mTLS**:
+
+  - The primary intent of an mTLS connection is to **control which clients can connect to the server**.
+  - Unlike one-way TLS, where only the client authenticates the server, mTLS ensures that **both the client and the server authenticate each other's identities**.
+  - This means the server is configured to accept connections only from a limited group of verified clients.
+
+- **Mechanism and Connection Flow**:
+
+  1.  The client initiates a request to access protected information from the server.
+  2.  The server responds by sending its X.509 certificate to the client.
+  3.  The client then validates the received server certificate, typically through a Certificate Authority (CA) if it's CA-signed.
+  4.  If the server's certificate is successfully verified, the client sends its own certificate to the server.
+  5.  The server, in turn, verifies the client's certificate, also through the CA.
+  6.  Once both verifications are successful, the server grants the client permission to access the protected data.
+
+- **Required Keys and Certificates**:
+  To enable mTLS, a set of specific keys and certificates are needed, including:
+
+  - `server.key`: The server's **private RSA key**.
+  - `server.crt`: The server's **public certificate**.
+  - `client.key`: The client's **private RSA key**.
+  - `client.crt`: The client's **public certificate**.
+  - `ca.crt`: The **public certificate of the Certificate Authority (CA)** that was used to sign both the client and server public certificates.
+    Tools like OpenSSL can be used to generate these.
+
+- **Enabling mTLS on a gRPC Server (Go example)**:
+
+  - The server's main function needs to be updated to **load its X.509 key pair** (`server.crt`, `server.key`).
+  - It then creates a **certificate pool** (`x509.NewCertPool()`) and **appends the CA's public certificate** (`ca.crt`) to this pool.
+  - Finally, the gRPC server is created with **TLS credentials** (`credentials.NewTLS`) that require and verify the client's certificate (`tls.RequireAndVerifyClientCert`) and use the loaded server certificate and the CA's certificate pool for client validation.
+
+- **Enabling mTLS on a gRPC Client (Go example)**:
+  - The client code must also load its **own X.509 key pair** (`client.crt`, `client.key`).
+  - Similar to the server, it creates a certificate pool and **appends the CA's public certificate** (`ca.crt`) to this pool.
+  - When dialing the gRPC server, the client provides **TLS transport credentials** (`credentials.NewTLS`) that include its own certificate, the CA's certificate pool as the root CAs, and importantly, sets the `ServerName` to match the Common Name on the server's certificate. This initiates the mutual authentication process.
+
+In essence, mTLS provides a higher level of security by ensuring that **both communicating parties can verify each other's identities**, which is crucial for controlling access in a distributed system.
+
+The implementation is located in the [mutual-tls-channel](./mutual-tls-channel) directory.
+
+My demonstration of mTLS in this chapter includes:
+![](./assets/02.png)

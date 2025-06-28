@@ -1,8 +1,3 @@
-// Go to ${grpc-up-and-running}/samples/ch02/productinfo
-// Optional: Execute protoc --go_out=plugins=grpc:golang/product_info product_info.proto
-// Execute go get -v github.com/grpc-up-and-running/samples/ch02/productinfo/go/product_info
-// Execute go run go/server/main.go
-
 package main
 
 import (
@@ -10,24 +5,27 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"errors"
-	wrapper "github.com/golang/protobuf/ptypes/wrappers"
-	"github.com/google/uuid"
-	pb "github.com/grpc-up-and-running/samples/ch02/productinfo/go/proto"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
-	"io/ioutil"
+	"os"
 	"log"
 	"net"
 	"path/filepath"
+
+	"github.com/google/uuid"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
+
+	pb "github.com/cuongpiger/golang/ecommerce"
 )
 
 // server is used to implement ecommerce/product_info.
 type server struct {
 	productMap map[string]*pb.Product
+
+	pb.UnimplementedProductInfoServer
 }
 
 // AddProduct implements ecommerce.AddProduct
-func (s *server) AddProduct(ctx context.Context, in *pb.Product) (*wrapper.StringValue, error) {
+func (s *server) AddProduct(ctx context.Context, in *pb.Product) (*pb.ProductID, error) {
 	out, err := uuid.NewUUID()
 	if err != nil {
 		log.Fatal(err)
@@ -37,11 +35,11 @@ func (s *server) AddProduct(ctx context.Context, in *pb.Product) (*wrapper.Strin
 		s.productMap = make(map[string]*pb.Product)
 	}
 	s.productMap[in.Id] = in
-	return &wrapper.StringValue{Value: in.Id}, nil
+	return &pb.ProductID{Value: in.Id}, nil
 }
 
 // GetProduct implements ecommerce.GetProduct
-func (s *server) GetProduct(ctx context.Context, in *wrapper.StringValue) (*pb.Product, error) {
+func (s *server) GetProduct(ctx context.Context, in *pb.ProductID) (*pb.Product, error) {
 	value, exists := s.productMap[in.Value]
 	if exists {
 		return value, nil
@@ -50,10 +48,11 @@ func (s *server) GetProduct(ctx context.Context, in *wrapper.StringValue) (*pb.P
 }
 
 var (
-	port = ":50051"
-    crtFile = filepath.Join("ch06", "mutual-tls-channel", "certs", "server.crt")
-    keyFile = filepath.Join("ch06", "mutual-tls-channel", "certs", "server.key")
-    caFile = filepath.Join("ch06", "mutual-tls-channel", "certs", "ca.crt")
+	port    = ":50051"
+	wd, _   = os.Getwd()
+	crtFile = filepath.Join(wd, "..", "certs", "server.crt")
+	keyFile = filepath.Join(wd, "..", "certs", "server.key")
+	caFile  = filepath.Join(wd, "..", "certs", "ca.crt")
 )
 
 func main() {
@@ -64,7 +63,7 @@ func main() {
 
 	// Create a certificate pool from the certificate authority
 	certPool := x509.NewCertPool()
-	ca, err := ioutil.ReadFile(caFile)
+	ca, err := os.ReadFile(caFile)
 	if err != nil {
 		log.Fatalf("could not read ca certificate: %s", err)
 	}
@@ -76,12 +75,12 @@ func main() {
 
 	opts := []grpc.ServerOption{
 		// Enable TLS for all incoming connections.
-		grpc.Creds(    // Create the TLS credentials
-			credentials.NewTLS(&tls.Config {
+		grpc.Creds( // Create the TLS credentials
+			credentials.NewTLS(&tls.Config{
 				ClientAuth:   tls.RequireAndVerifyClientCert,
 				Certificates: []tls.Certificate{certificate},
 				ClientCAs:    certPool,
-				},
+			},
 			)),
 	}
 
