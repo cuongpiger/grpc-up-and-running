@@ -39,14 +39,14 @@
   ```
 
 # ✅ Completed chaps
-- [x] **Chap 01**: Introduction to gRPC and Protocol Buffers
+- [x] [**Chap 01**](./chap01/README.md): Introduction to gRPC and Protocol Buffers
 - [x] [**Chap 02**](./chap02/README.md): Implementing a Simple gRPC Service
 - [x] [**Chap 03**](./chap03/README.md): Implementing a gRPC Service with Advanced Features
   - [x] Unary RPC
   - [x] Server Streaming RPC
   - [x] Client Streaming RPC
   - [x] Bidirectional Streaming RPC
-- [ ] [**Chap 04**](./chap04/README.md): gRPC - Under the hood
+- [x] [**Chap 04**](./chap04/README.md): gRPC - Under the hood
 - [x] [**Chap 05**](./chap05/README.md): gRPC - Beyond the Basics
   - [x] [Interceptors](./chap05/interceptors/)
   - [x] [Deadlines](./chap05/deadlines/)
