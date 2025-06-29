@@ -101,3 +101,37 @@ The implementation is located in the [basic-authentication](./basic-authenticati
 
 My demonstration of basic authentication in this chapter includes:
 ![](./assets/03.png)
+
+# Using OAuth 2.0
+
+In Chapter 6, the section "Using OAuth 2.0" explains how this framework for access delegation can be utilized to **authenticate gRPC calls**. OAuth 2.0 allows users to grant **limited access to services** on their behalf, rather than providing full access via a username and password.
+
+The OAuth 2.0 flow involves four main "characters":
+
+- The **client**, which seeks to access a resource.
+- The **authorization server**, from which the client obtains a token.
+- The **resource server**, where the resource resides.
+- The **resource owner**, who grants access to their resources.
+
+**Client-Side Implementation:**
+
+- gRPC provides **built-in support for OAuth 2.0**.
+- To integrate OAuth 2.0, the client needs to **obtain a token** (an arbitrary, properly-sized, unpredictable string) from the authorization server.
+- This token can have a **specified validity period**, unlike a simple username/password.
+- Once the client has the token, it **sends requests to the resource server with this token**.
+- In a Go client application, you set up the credentials for the connection by **initializing `oauth.NewOauthAccess` with the token**.
+- You then configure `grpc.DialOption` using `grpc.WithPerRPCCredentials` to **apply this OAuth token for all RPC calls** on that connection.
+- It's important to note that **OAuth requires the underlying transport to be secure**, meaning channel security (like TLS) should also be enabled. The token is prefixed with its type (e.g., "Bearer ") and attached to the metadata with the key "authorization".
+
+**Server-Side Implementation:**
+
+- On the server side, a **similar interceptor is added to check and validate the client token** that arrives with the request.
+- A function, such as `ensureValidToken` in Go, is defined to **validate the token**.
+- This validation function extracts the metadata from the request's context, retrieves the "authorization" header, and then validates the token.
+- If the token is missing or invalid, the interceptor **blocks the execution and returns an error**; otherwise, it allows the request to proceed to the intended RPC handler.
+- Token validation can be configured for all RPCs by setting either a `grpc.UnaryInterceptor` or a `grpc.StreamInterceptor` depending on the service type.
+
+The implementation is located in the [token-based-authentication](./token-based-authentication) directory.
+
+My demonstration of OAuth 2.0 in this chapter includes:
+![](./assets/04.png)

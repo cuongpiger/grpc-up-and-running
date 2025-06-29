@@ -58,3 +58,4 @@
   - [x] [One-Way Secured Connection with TLS](./chap06/secure-channel/)
   - [x] [Mutual Secured Connection with mTLS](./chap06/mutual-tls-channel/)
   - [x] [Basic Authentication](./chap06/basic-authentication/)
+  - [x] [OAuth 2.0](./chap06/token-based-authentication/)
