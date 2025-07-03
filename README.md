@@ -59,3 +59,6 @@
   - [x] [Mutual Secured Connection with mTLS](./chap06/mutual-tls-channel/)
   - [x] [Basic Authentication](./chap06/basic-authentication/)
   - [x] [OAuth 2.0](./chap06/token-based-authentication/)
+- [x] [**Chap 07**](./chap07/README.md): Running gRPC in Production
+  - [x] [Mocking & Unit testing](./chap07/grpc-continous-integration/)
+  - [x] [Load testing](./chap07/grpc-continous-integration/)
