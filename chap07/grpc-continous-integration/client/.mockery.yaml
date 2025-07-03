@@ -1,4 +1,0 @@
-packages:
-  github.com/cuongpiger/golang/ecommerce:
-    interfaces:
-      ProductInfoClient:

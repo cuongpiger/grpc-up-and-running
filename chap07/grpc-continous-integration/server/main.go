@@ -10,6 +10,7 @@ import (
 	"errors"
 	"log"
 	"net"
+	"sync"
 
 	"github.com/google/uuid"
 	"google.golang.org/grpc"
@@ -22,9 +23,36 @@ const (
 	port = ":50051"
 )
 
+type productMap struct {
+	sync.RWMutex
+	products map[string]*pb.Product
+}
+
+func newProductMap() *productMap {
+	return &productMap{
+		RWMutex:  sync.RWMutex{},
+		products: make(map[string]*pb.Product),
+	}
+}
+
+func (s *productMap) Get(id string) (*pb.Product, bool) {
+	s.RLock()
+	defer s.RUnlock()
+	product, exists := s.products[id]
+	return product, exists
+}
+
+func (s *productMap) Set(id string, product *pb.Product) {
+	s.Lock()
+	defer s.Unlock()
+
+	s.products[id] = product
+	log.Printf("Product added - ID: %s, Name: %s", id, product.Name)
+}
+
 // server is used to implement ecommerce/product_info.
 type server struct {
-	productMap map[string]*pb.Product
+	productMap *productMap
 
 	pb.UnimplementedProductInfoServer
 }
@@ -37,16 +65,16 @@ func (s *server) AddProduct(ctx context.Context, in *pb.Product) (*pb.ProductID,
 	}
 	in.Id = out.String()
 	if s.productMap == nil {
-		s.productMap = make(map[string]*pb.Product)
+		s.productMap = newProductMap()
 	}
-	s.productMap[in.Id] = in
+	s.productMap.Set(in.Id, in)
 	log.Printf("New product added - ID : %s, Name : %s", in.Id, in.Name)
 	return &pb.ProductID{Value: in.Id}, nil
 }
 
 // GetProduct implements ecommerce.GetProduct
 func (s *server) GetProduct(ctx context.Context, in *pb.ProductID) (*pb.Product, error) {
-	value, exists := s.productMap[in.Value]
+	value, exists := s.productMap.Get(in.Value)
 	if exists {
 		log.Printf("New product retrieved - ID : %s", in)
 		return value, nil
