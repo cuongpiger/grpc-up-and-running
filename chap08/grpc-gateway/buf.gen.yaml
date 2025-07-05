@@ -1,0 +1,32 @@
+version: v1
+plugins:
+  - plugin: go
+    out: server
+    opt: 
+      - paths=source_relative
+      - Mproto/product_info.proto=.
+  - plugin: go-grpc
+    out: server
+    opt: 
+      - paths=source_relative
+      - Mproto/product_info.proto=.
+  - plugin: grpc-gateway
+    out: server
+    opt: 
+      - paths=source_relative
+      - Mproto/product_info.proto=.
+  - plugin: go
+    out: client
+    opt: 
+      - paths=source_relative
+      - Mproto/product_info.proto=.
+  - plugin: go-grpc
+    out: client
+    opt: 
+      - paths=source_relative
+      - Mproto/product_info.proto=.
+  - plugin: grpc-gateway
+    out: client
+    opt: 
+      - paths=source_relative
+      - Mproto/product_info.proto=.

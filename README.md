@@ -65,3 +65,5 @@
   - [x] [OpenTelemetry for metrics](./chap07/grpc-opentelemetry/)
   - [x] [OpenTelemetry for tracing](./chap07/grpc-otel-tracing/)
   - [x] [gRPC with Prometheus](./chap07/grpc-prometheus/)
+- [x] [**Chap 08**](./chap08/README.md): The gRPC Ecosystem
+  - [x] [gRPC Gateway](./chap08/grpc-gateway/)
