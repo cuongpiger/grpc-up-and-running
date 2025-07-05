@@ -32,7 +32,7 @@ make loadTest
 
 ![](./assets/01.png)
 
-# OpenTelemetry for tracing
+# OpenTelemetry for metrics
 
 - Working directory [`grpc-opentelemetry`](./grpc-opentelemetry/)
 
@@ -48,3 +48,21 @@ make runClient
 - Access the zPages trace visualization at `http://localhost:7777/debug/zpages/tracez`
 
   ![](./assets/04.png)
+
+# OpenTelemetry for tracing
+
+- Working directory [`grpc-otel-tracing`](./grpc-otel-tracing/)
+
+```shell
+make dockerUp
+make runServer
+# another terminal
+make runClient
+```
+
+![](./assets/07.png)
+
+- Access the Jaeger UI at `http://localhost:16686`
+
+  ![](./assets/05.png)
+  ![](./assets/06.png)

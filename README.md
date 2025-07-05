@@ -62,3 +62,5 @@
 - [x] [**Chap 07**](./chap07/README.md): Running gRPC in Production
   - [x] [Mocking & Unit testing](./chap07/grpc-continous-integration/)
   - [x] [Load testing](./chap07/grpc-continous-integration/)
+  - [x] [OpenTelemetry for metrics](./chap07/grpc-opentelemetry/)
+  - [x] [OpenTelemetry for tracing](./chap07/grpc-otel-tracing/)
