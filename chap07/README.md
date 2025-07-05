@@ -31,3 +31,20 @@ make loadTest
 ```
 
 ![](./assets/01.png)
+
+# OpenTelemetry for tracing
+
+- Working directory [`grpc-opentelemetry`](./grpc-opentelemetry/)
+
+```shell
+make runServer
+
+# another terminal
+make runClient
+```
+
+![](./assets/03.png)
+
+- Access the zPages trace visualization at `http://localhost:7777/debug/zpages/tracez`
+
+  ![](./assets/04.png)
