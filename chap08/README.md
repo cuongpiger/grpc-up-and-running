@@ -1,6 +1,6 @@
 # gRPC gateway
 
-- Working directory: [`chap08/grpc-gateway`](chap08/grpc-gateway)
+- Working directory: [`chap08/grpc-gateway`](./chap08/grpc-gateway)
 
 - Run the gRPC server and gRPT reverse proxy:
 
