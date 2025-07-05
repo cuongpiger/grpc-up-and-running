@@ -66,3 +66,17 @@ make runClient
 
   ![](./assets/05.png)
   ![](./assets/06.png)
+
+# Prometheus for metrics
+- Working directory [`grpc-prometheus`](./grpc-prometheus/)
+
+```shell
+make runServer
+# another terminal
+make runClient
+```
+
+![](./assets/09.png)
+- Access the Prometheus UI at `http://localhost:9092`
+
+  ![](./assets/08.png)

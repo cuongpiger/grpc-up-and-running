@@ -64,3 +64,4 @@
   - [x] [Load testing](./chap07/grpc-continous-integration/)
   - [x] [OpenTelemetry for metrics](./chap07/grpc-opentelemetry/)
   - [x] [OpenTelemetry for tracing](./chap07/grpc-otel-tracing/)
+  - [x] [gRPC with Prometheus](./chap07/grpc-prometheus/)
