@@ -131,14 +131,15 @@ Key aspects of the gRPC Server Reflection Protocol:
   - **Inspect message types**: Run the following commands by giving the full name of the message type (in the
     format of `<package>.<type>`) to inspect the message type:
     `bash
+
     > grpc_cli type localhost:50051 ecommerce.Product
-    message Product {
-      string id = 1 [json_name = "id"];
-      string name = 2 [json_name = "name"];
-      string description = 3 [json_name = "description"];
-      float price = 4 [json_name = "price"];
-    }
-    `
+    > message Product {
+    > string id = 1 [json_name = "id"];
+    > string name = 2 [json_name = "name"];
+    > string description = 3 [json_name = "description"];
+    > float price = 4 [json_name = "price"];
+    > }
+    > `
 
   - **Call remote methods**: Run the following commands to send remote calls to the server and get the response:
 
@@ -181,3 +182,20 @@ Key aspects of the gRPC Server Reflection Protocol:
   ```
 
   ![](./assets/02.png)
+
+# gRPC Health Check
+
+- Working directory: [`chap08/grpc-healthcheck`](./chap08/grpc-healthcheck)
+- Run the gRPC server with health check enabled:
+
+```bash
+make runServer
+```
+
+- Make a gRPC request to the server:
+
+```bash
+bin/grpc_health_probe -addr=localhost:50051
+```
+
+![](./assets/03.png)
