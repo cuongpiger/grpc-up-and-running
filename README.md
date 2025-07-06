@@ -68,3 +68,4 @@
 - [x] [**Chap 08**](./chap08/README.md): The gRPC Ecosystem
   - [x] [gRPC Gateway](./chap08/grpc-gateway/)
   - [x] [gRPC Reflection](./chap08/grpc-reflection/)
+  - [x] [gRPC Middleware](./chap08/grpc-middlewares/)

@@ -110,6 +110,7 @@ Key aspects of the gRPC Server Reflection Protocol:
     ```
 
   - **List service details**: Run the following command by giving the service's full name (in the format of `<package>.<service>`) to inspect the service:
+
     ```bash
     > grpc_cli ls localhost:50051 ecommerce.ProductInfo -l
     filename: proto/product_info.proto
@@ -121,14 +122,15 @@ Key aspects of the gRPC Server Reflection Protocol:
     ```
 
   - **List method details**: Run the following command by giving the method's full name (in the format of `<package>.<service>.<method>`) to inspect the method:
+
     ```bash
     > grpc_cli ls localhost:50051 ecommerce.ProductInfo.addProduct -l
       rpc addProduct(ecommerce.Product) returns (google.protobuf.StringValue) {}
     ```
 
   - **Inspect message types**: Run the following commands by giving the full name of the message type (in the
-format of `<package>.<type>`) to inspect the message type:
-    ```bash
+    format of `<package>.<type>`) to inspect the message type:
+    `bash
     > grpc_cli type localhost:50051 ecommerce.Product
     message Product {
       string id = 1 [json_name = "id"];
@@ -136,17 +138,19 @@ format of `<package>.<type>`) to inspect the message type:
       string description = 3 [json_name = "description"];
       float price = 4 [json_name = "price"];
     }
-    ```
+    `
 
   - **Call remote methods**: Run the following commands to send remote calls to the server and get the response:
+
     - Call the `addProduct` method in the `ProductInfo` service:
+
       ```bash
       > grpc_cli call localhost:50051 addProduct "name: 'Apple', description: 'iphone 11', price: 699"
       connecting to localhost:50051
       value: "05ada7d6-5a55-11f0-a6d7-66551ea376eb"
       Rpc succeeded with OK status
       ```
-    
+
     - Call the `getProduct` method in the `ProductInfo` service:
       ```bash
       > grpc_cli call localhost:50051 getProduct "value: '05ada7d6-5a55-11f0-a6d7-66551ea376eb'"
@@ -158,3 +162,22 @@ format of `<package>.<type>`) to inspect the message type:
       Rpc succeeded with OK status
       ```
 
+# gRPC Middlewares
+
+- Working directory: [`chap08/grpc-middlewares`](./chap08/grpc-middlewares)
+- Run the gRPC server with middlewares enabled:
+
+  ```bash
+  make runServer
+  ```
+
+- Make a gRPC request to the server:
+
+  ```bash
+  > grpc_cli call localhost:50051 addProduct "name: 'Apple', description: 'iphone 11', price: 699"
+  connecting to localhost:50051
+  value: "989e4f0e-5a56-11f0-9c64-66551ea376eb"
+  Rpc succeeded with OK status
+  ```
+
+  ![](./assets/02.png)
