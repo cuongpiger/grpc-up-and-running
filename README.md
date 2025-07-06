@@ -69,3 +69,4 @@
   - [x] [gRPC Gateway](./chap08/grpc-gateway/)
   - [x] [gRPC Reflection](./chap08/grpc-reflection/)
   - [x] [gRPC Middleware](./chap08/grpc-middlewares/)
+  - [x] [gRPC Health Check](./chap08/grpc-healthcheck/)
