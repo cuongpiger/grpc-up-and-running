@@ -67,3 +67,4 @@
   - [x] [gRPC with Prometheus](./chap07/grpc-prometheus/)
 - [x] [**Chap 08**](./chap08/README.md): The gRPC Ecosystem
   - [x] [gRPC Gateway](./chap08/grpc-gateway/)
+  - [x] [gRPC Reflection](./chap08/grpc-reflection/)
